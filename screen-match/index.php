@@ -8,7 +8,8 @@ echo "Bem-vindo(a) ao Screen Match!\n";
 $filme = new Filme(
     "Thor: Ragnarok", 
     2021, 
-    Genero::SUPERHEROI
+    Genero::SUPERHEROI,
+    180,
 );
 $filme->avalia(10);
 $filme->avalia(10);

@@ -1,13 +1,15 @@
 <?php
 
-class Filme {
+class Serie {
     private array $notas;
 
     public function __construct(
-        public readonly string $nome = 'Nome padrão', 
-        public readonly int $anoLancamento = 2024, 
-        public readonly Genero $genero = Genero::ACAO,
-        public readonly int $duracaoEmMinutos,
+        public readonly string $nome,
+        public readonly int $anoLancamento,
+        public readonly Genero $genero,
+        public readonly int $numeroDeTemporadas,
+        public readonly int $episodiosPorTemporada,
+        public readonly int $minutosPorEpisodio,
     ) {
         $this->notas = [];
     }
