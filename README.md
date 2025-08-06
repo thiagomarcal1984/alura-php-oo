@@ -133,3 +133,42 @@ var_dump($filme->notas);
 
 echo $filme->media() . "\n";
 ```
+## Conhecendo os conceitos
+- As variáveis de objetos são chamados de **atributos** ou **propriedades**;
+- As funções de objetos PHP são chamados de **métodos**.
+
+## Impedindo acesso aos dados
+Vamos usar as palavras reservadas `private` (para todos os atributos) e `public` (para todos os métodos).
+
+A ideia é evitar acesso direto às propriedades e permitir sua modificação somente por meio dos métodos.
+
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+class Filme {
+    private string $nome;
+    private int $anoLancamento;
+    private string $genero;
+    private float $media;
+    private array $notas = [];
+
+    public function avalia(float $nota): void {
+        if ($nota < 0 || $nota > 10) {
+            echo "Nota inválida\n";
+            return;
+        }
+        $this->notas[] = $nota;
+    }
+
+    public function media(): float {
+        if (count($this->notas) === 0) {
+            return 0;
+        }
+        $soma = array_sum($this->notas);
+        return $soma / count($this->notas);
+    }   
+}
+```
+
+O código de `index.php` vai quebrar, por causa do uso do modificador `private` em todos os atributos. Na próxima aula vamos criar os métodos públicos que permitem as operações sobre os atributos (todos privados).

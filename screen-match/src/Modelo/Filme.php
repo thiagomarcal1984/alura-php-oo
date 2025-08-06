@@ -1,13 +1,13 @@
 <?php
 
 class Filme {
-    public string $nome;
-    public int $anoLancamento;
-    public string $genero;
-    public float $media;
-    public array $notas = [];
+    private string $nome;
+    private int $anoLancamento;
+    private string $genero;
+    private float $media;
+    private array $notas = [];
 
-    function avalia(float $nota): void {
+    public function avalia(float $nota): void {
         if ($nota < 0 || $nota > 10) {
             echo "Nota inválida\n";
             return;
@@ -15,7 +15,7 @@ class Filme {
         $this->notas[] = $nota;
     }
 
-    function media(): float {
+    public function media(): float {
         if (count($this->notas) === 0) {
             return 0;
         }
