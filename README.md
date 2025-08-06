@@ -419,3 +419,75 @@ class Serie {
 > Algumas modificações foram feitas na classe `Filme` e na `index.php`, mas não são relevantes no momento.
 
 Na próxima aula vamos aprender a extrair o conteúdo comum entre as classes `Filme` e `Serie`.
+
+## Extraindo o que é comum
+Vamos criar uma superclasse chamada `Titulo`:
+
+```PHP
+// src/Modelo/Titulo.php
+<?php
+
+class Titulo {
+    private array $notas;
+
+    public function __construct(
+        public readonly string $nome,
+        public readonly int $anoLancamento,
+        public readonly Genero $genero,
+    ) {
+        $this->notas = [];
+    }
+
+    public function avalia(float $nota): void {
+        $this->notas[] = $nota;
+    }
+
+    public function media(): float {
+        if (count($this->notas) === 0) {
+            return 0;
+        }
+        $soma = array_sum($this->notas);
+        return $soma / count($this->notas);
+    }   
+}
+```
+
+E vamos modificar as classes `Filme` e `Serie` para extenderem `Titulo` e enxugar os excessos/repetições:
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+class Filme extends Titulo {
+    public function __construct(
+        public readonly int $duracaoEmMinutos,
+    ) {
+    }
+}
+
+// src/Modelo/Filme.php
+<?php
+
+class Serie extends Titulo {
+    public function __construct(
+        public readonly int $numeroDeTemporadas,
+        public readonly int $episodiosPorTemporada,
+        public readonly int $minutosPorEpisodio,
+    ) {
+    }
+}
+```
+
+O código, porém ainda não está funcional na `index.php`. Na próxima aula vamos resolver o problema.
+```
+PHP Fatal error:  Uncaught TypeError: Filme::__construct(): Argument #1 ($duracaoEmMinutos) must be of type int, string given, called in D:\alura\php-oo\screen-match\index.php on line 13 and defined in D:\alura\php-oo\screen-match\src\Modelo\Filme.php:4
+Stack trace:
+#0 D:\alura\php-oo\screen-match\index.php(13): Filme->__construct('Thor: Ragnarok', 2021, Object(Genero), 180)
+#1 {main}
+  thrown in D:\alura\php-oo\screen-match\src\Modelo\Filme.php on line 4
+
+Fatal error: Uncaught TypeError: Filme::__construct(): Argument #1 ($duracaoEmMinutos) must be of type int, string given, called in D:\alura\php-oo\screen-match\index.php on line 13 and defined in D:\alura\php-oo\screen-match\src\Modelo\Filme.php:4
+Stack trace:
+#0 D:\alura\php-oo\screen-match\index.php(13): Filme->__construct('Thor: Ragnarok', 2021, Object(Genero), 180)
+#1 {main}
+  thrown in D:\alura\php-oo\screen-match\src\Modelo\Filme.php on line 4
+```
