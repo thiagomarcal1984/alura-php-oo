@@ -6,7 +6,7 @@ class Filme {
     public function __construct(
         public readonly string $nome = 'Nome padrão', 
         public readonly int $anoLancamento = 2024, 
-        public readonly string $genero = 'ação'
+        public readonly Genero $genero = Genero::ACAO
     ) {
         $this->notas = [];
     }

@@ -316,3 +316,65 @@ $filme = new Filme(
 // Resto do código
 echo $filme->anoLancamento . "\n"; // Note que não há chamada a método!
 ```
+## Definindo um tipo para gênero
+Criando a enumeração `Genero`:
+```PHP
+// src/Modelo/Genero
+<?php
+
+enum Genero {
+    case ACAO;
+    case COMEDIA;
+    case DRAMA;
+    case TERROR;
+    case SUPERHEROI;
+
+    public function descricao(): string {
+        return match($this) {
+            self::ACAO => 'Ação',
+            self::COMEDIA => 'Comédia',
+            self::DRAMA => 'Drama',
+            self::TERROR => 'Terror',
+            self::SUPERHEROI => 'Super-herói',
+            default => 'Gênero desconhecido',
+        };
+    }
+}
+```
+Modificando a classe `Filme` para conter o objeto do tipo `Genero`:
+```PHP
+// src/Modelo/Genero.php
+<?php
+
+class Filme {
+    private array $notas;
+
+    public function __construct(
+        public readonly string $nome = 'Nome padrão', 
+        public readonly int $anoLancamento = 2024, 
+        public readonly Genero $genero = Genero::ACAO
+    ) {
+        $this->notas = [];
+    }
+    // Resto do código
+}
+```
+
+Uso das classes em `index.php`:
+```PHP
+// index.php
+<?php
+
+require __DIR__ . '/src/Modelo/Filme.php';
+require __DIR__ . '/src/Modelo/Genero.php';
+
+echo "Bem-vindo(a) ao Screen Match!\n";
+
+$filme = new Filme(
+    "Thor: Ragnarok", 
+    2021, 
+    Genero::SUPERHEROI
+);
+// Resto do código
+echo $filme->genero->descricao() . "\n";
+```
