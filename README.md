@@ -205,3 +205,51 @@ $filme->defineAnoLancamento(2021);
 
 echo $filme->anoLancamento() . "\n";
 ```
+# Modelo mais robusto
+## Método construtor
+Para criar um construtor de um objeto, implementamos a função `__construct` dentro da classe desse objeto.
+
+Criando o construtor da classe `Filme` do jeito **antigo**:
+```PHP
+<?php
+
+class Filme {
+    private string $nome;
+    private int $anoLancamento;
+    private string $genero;
+    private array $notas;
+
+    public function __construct(
+        string $nome = 'Nome padrão', 
+        int $anoLancamento = 2024, 
+        string $genero = 'ação'
+    ) {
+        $this->nome = $nome;
+        $this->anoLancamento = $anoLancamento;
+        $this->genero = $genero;
+        $this->notas = [];
+    }
+    // Resto do código
+}
+```
+
+> Métodos construtores no PHP **NÃO PODEM TER RETORNO**!!! O retorno implicitamente é o objeto construído.
+
+Criando o construtor da classe `Filme` do jeito **novo**:
+```PHP
+<?php
+
+class Filme {
+    private array $notas;
+
+    public function __construct(
+        private string $nome = 'Nome padrão', 
+        private int $anoLancamento = 2024, 
+        private string $genero = 'ação'
+    ) {
+        $this->notas = [];
+    }
+    // Resto do código
+}
+```
+> Note que os modificadores de acesso `private` ficam **dentro** dos parênteses do construtor. O atributo `$notas` foi criado à parte para que ele não seja requisitado pelo construtor.
