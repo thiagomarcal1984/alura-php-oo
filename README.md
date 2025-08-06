@@ -172,3 +172,36 @@ class Filme {
 ```
 
 O código de `index.php` vai quebrar, por causa do uso do modificador `private` em todos os atributos. Na próxima aula vamos criar os métodos públicos que permitem as operações sobre os atributos (todos privados).
+
+## Getters e setters
+Vamos criar um getter e um setter para o atributo `anoLancamento` da classe `Filme`:
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+class Filme {
+    private int $anoLancamento = 2024;
+    // Resto do código
+
+    public function anoLancamento(): int {
+        return $this->anoLancamento;
+    }
+    public function definieAnoLancamento(int $anoLancamento): void {
+        $this->anoLancamento = $anoLancamento;
+    }
+}
+```
+
+E na página `index.php` vamos modificar o código para usar o getter e o setter: 
+```PHP
+// index.php
+<?php
+
+require __DIR__ . '/src/Modelo/Filme.php';
+
+$filme = new Filme();
+$filme->defineAnoLancamento(2021);
+// Resto do código
+
+echo $filme->anoLancamento() . "\n";
+```
