@@ -49,3 +49,29 @@ var_dump(substr($filme->nome, 0, $posicaoDoisPontos));
 > 1. objeto com cifrão prefixado;
 > 2. uma seta (operador de acesso à propriedade); e 
 > 3. a propriedade (sem prefixo de cifrão).
+
+## Valor vs Referência
+O comando `php -a` serve para acessar o console interativo do PHP.
+
+Execute o comando no diretório `screen-match` (a raiz do projeto PHP).
+
+```bash
+php > require 'src/Modelo/Filme.php';
+php > $filme = new Filme();
+php > $filme->nome = 'Nome do filme';
+php > var_dump($filme);
+object(Filme)#1 (1) {
+  ["nome"]=>
+  string(13) "Nome do filme"
+  ["anoLancamento"]=>
+  uninitialized(int)
+  ["genero"]=>
+  uninitialized(string)
+  ["nota"]=>
+  uninitialized(float)
+}
+php >
+```
+> Valor vs: Referência: 
+> 1. variáveis de tipos primitivos, quando são atribuídas a outras variáveis, COPIAM o valor na atribuição; 
+> 2. variáveis de tipo object, quando são atribuídas a outras variáveis, REFERENCIAM o objeto atribuído.
