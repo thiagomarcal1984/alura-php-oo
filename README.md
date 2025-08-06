@@ -75,3 +75,61 @@ php >
 > Valor vs: Referência: 
 > 1. variáveis de tipos primitivos, quando são atribuídas a outras variáveis, COPIAM o valor na atribuição; 
 > 2. variáveis de tipo object, quando são atribuídas a outras variáveis, REFERENCIAM o objeto atribuído.
+
+# Controlando o acesso
+## Definindo ações para o filme
+Mudança na implementação da classe `Filme`:
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+class Filme {
+    public string $nome;
+    public int $anoLancamento;
+    public string $genero;
+    public float $media;
+    public array $notas = [];
+
+    function avalia(float $nota): void {
+        if ($nota < 0 || $nota > 10) {
+            echo "Nota inválida\n";
+            return;
+        }
+        $this->notas[] = $nota;
+    }
+
+    function media(): float {
+        if (count($this->notas) === 0) {
+            return 0;
+        }
+        $soma = array_sum($this->notas);
+        return $soma / count($this->notas);
+    }   
+}
+```
+> Note que dentro das functions `avalia` e `media` as referências aos atributos do objeto instanciado são prefixadas com a palavra reservada `$this`. Sem ela, o PHP interpreta que o atributo na verdade é uma variável de bloco da função.
+
+O antigo arquivo `index.php` foi copiado para o arquivo `antigo.php`.
+
+O novo código de `index.php` é o seguinte: 
+```PHP
+// index.php
+<?php
+
+require __DIR__ . '/src/Modelo/Filme.php';
+
+echo "Bem-vindo(a) ao Screen Match!\n";
+
+$filme = new Filme();
+$filme->nome = "Thor: Ragnarok";
+$filme->anoLancamento = 2021;
+$filme->genero = "super-herói";
+$filme->avalia(10);
+$filme->avalia(6);
+$filme->avalia(7.8);
+$filme->avalia(8.2);
+
+var_dump($filme->notas);
+
+echo $filme->media() . "\n";
+```
