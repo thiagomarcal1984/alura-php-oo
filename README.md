@@ -253,3 +253,66 @@ class Filme {
 }
 ```
 > Note que os modificadores de acesso `private` ficam **dentro** dos parênteses do construtor. O atributo `$notas` foi criado à parte para que ele não seja requisitado pelo construtor.
+
+## Propriedades para leitura
+Se dentro dos parâmetros do construtor usarmos o modificador de acesso `public readonly`, os atributos declarados permitem escrita apenas na construção e leitura sem precisar criar os getters! Os atributos serão diretamente acessíveis para leitura apenas (readonly).
+
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+class Filme {
+    private array $notas;
+
+    public function __construct(
+        public readonly string $nome = 'Nome padrão', 
+        public readonly int $anoLancamento = 2024, 
+        public readonly string $genero = 'ação'
+    ) {
+        $this->notas = [];
+    }
+
+    public function avalia(float $nota): void {
+        if ($nota < 0 || $nota > 10) {
+            echo "Nota inválida\n";
+            return;
+        }
+        $this->notas[] = $nota;
+    }
+
+    public function media(): float {
+        if (count($this->notas) === 0) {
+            return 0;
+        }
+        $soma = array_sum($this->notas);
+        return $soma / count($this->notas);
+    }   
+}
+```
+> Veja como a classe ficou mais limpa! Os métodos não replicam o boilerplate de getters e setters dos atributos!
+> 
+> É possível declarar a classe inteira como `readonly`. A desvantagem é que nada no objeto pode ser alterado depois que ele for construído.
+> ```PHP
+> <?php
+> readonly class Classe {
+>   //Resto do código    
+> }
+> ```
+
+Nova implementação de `index.php`:
+```PHP
+// index.php
+<?php
+
+require __DIR__ . '/src/Modelo/Filme.php';
+
+echo "Bem-vindo(a) ao Screen Match!\n";
+
+$filme = new Filme(
+    "Thor: Ragnarok", 
+    2021, 
+    "super-herói"
+);
+// Resto do código
+echo $filme->anoLancamento . "\n"; // Note que não há chamada a método!
+```

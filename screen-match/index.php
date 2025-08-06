@@ -17,4 +17,4 @@ $filme->avalia(5);
 var_dump($filme);
 
 echo $filme->media() . "\n";
-echo $filme->anoLancamento() . "\n";
+echo $filme->anoLancamento . "\n";
