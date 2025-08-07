@@ -491,3 +491,87 @@ Stack trace:
 #1 {main}
   thrown in D:\alura\php-oo\screen-match\src\Modelo\Filme.php on line 4
 ```
+## Especializando as classes
+É necessário incluir os parâmetros da superclasse nas subclasses, e invocar o construtor da superclasse em cada superclasse.
+
+A invocação do construtor da superclasse é feito por meio do código `parent::__construct($parametros)`. Os parâmetros da superclasse não precisam dos modificadores de acesso.
+
+Veja a implementação das subclasses:
+```PHP
+// src/Modelo/Filme.php
+<?php
+
+require_once __DIR__ . '/Titulo.php';
+
+class Filme extends Titulo {
+    public function __construct(
+        string $nome,
+        int $anoLancamento,
+        Genero $genero,
+        // Os primeiros parâmetros são herdados da classe Titulo.
+        public readonly int $duracaoEmMinutos,
+    ) {
+        parent::__construct($nome, $anoLancamento, $genero);
+    }
+}
+
+// src/Modelo/Serie.php
+<?php
+
+require_once __DIR__ . '/Titulo.php';
+
+class Serie extends Titulo {
+    public function __construct(
+        string $nome,
+        int $anoLancamento,
+        Genero $genero,
+        // Os primeiros parâmetros são herdados da classe Titulo.
+        public readonly int $numeroDeTemporadas,
+        public readonly int $episodiosPorTemporada,
+        public readonly int $minutosPorEpisodio,
+    ) {
+        parent::__construct($nome, $anoLancamento, $genero);
+    }
+}
+```
+
+Implementação em `index.php`:
+```PHP
+<?php
+
+require __DIR__ . '/src/Modelo/Filme.php';
+require __DIR__ . '/src/Modelo/Genero.php';
+require __DIR__ . '/src/Modelo/Serie.php';
+
+echo "Bem-vindo(a) ao Screen Match!\n";
+
+$filme = new Filme(
+    "Thor: Ragnarok", 
+    2021, 
+    Genero::SUPERHEROI,
+    180,
+);
+$filme->avalia(10);
+$filme->avalia(10);
+$filme->avalia(5);
+$filme->avalia(5);
+
+var_dump($filme);
+
+echo $filme->media() . "\n";
+echo $filme->anoLancamento . "\n";
+echo $filme->genero->descricao() . "\n";
+
+$serie = new Serie(
+    "Lost",
+    2007,
+    Genero::DRAMA,
+    10,
+    20,
+    30
+);
+
+echo $serie->anoLancamento . "\n";
+$serie->avalia(8);
+echo $serie->media() . "\n";
+```
