@@ -22,4 +22,9 @@ class Titulo {
         $soma = array_sum($this->notas);
         return $soma / count($this->notas);
     }   
+
+    public function duracaoEmMinutos(): int
+    {
+        return 0;
+    }
 }

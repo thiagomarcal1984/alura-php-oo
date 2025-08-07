@@ -575,3 +575,96 @@ echo $serie->anoLancamento . "\n";
 $serie->avalia(8);
 echo $serie->media() . "\n";
 ```
+
+# Implementações diferentes
+## Calculadora de maratona
+Queremos calcular quantos minutos uma maratona de filmes e séries teria.
+
+A implementação a seguir não usa herança, e aumenta a complexidade do código para cada subclasse de `Titulo`:
+```PHP
+// src/Calculos/CalculadoraDeMaratona.php, sem uso de herança.
+<?php
+
+class CalculadoraDeMaratona
+{
+    private int $duracaoMaratona = 0;
+
+    public function inclui(Titulo $titulo): void
+    {
+        if ($titulo instanceof Filme) {
+            $this->duracaoMaratona += $titulo->duracaoEmMinutos;
+        } elseif ($titulo instanceof Serie) {
+            $this->duracaoMaratona += $titulo->numeroDeTemporadas * $titulo->episodiosPorTemporada * $titulo->minutosPorEpisodio;
+        }
+    }
+
+    public function duracaoEmMinutos(): int
+    {
+        return $this->duracaoMaratona;
+    }
+}
+```
+
+Se usássemos um método herdado da classe `Titulo` com a duração dos títulos, isso ficaria mais facilitado:
+
+```PHP
+// src/Calculos/CalculadoraDeMaratona.php, com uso de herança.
+<?php
+
+class CalculadoraDeMaratona
+{
+    private int $duracaoMaratona = 0;
+
+    public function inclui(Titulo $titulo): void
+    {
+        // Não houve necessidade de usar ifs.
+        $this->duracaoMaratona += $titulo->duracaoEmMinutos();
+    }
+
+    public function duracaoEmMinutos(): int
+    {
+        return $this->duracaoMaratona;
+    }
+}
+```
+
+Veja como ficar a implementação das classes de modelo: 
+```PHP
+// src/Modelo/Titulo.php
+<?php
+
+class Titulo {
+    // Resto do código 
+    public function duracaoEmMinutos(): int
+    {
+        return 0;
+    }
+}
+
+// src/Modelo/Filme.php
+<?php
+
+require_once __DIR__ . '/Titulo.php';
+
+class Filme extends Titulo {
+    // Resto do código
+    public function duracaoEmMinutos(): int
+    {
+        return $this->duracaoEmMinutos;
+    }
+}
+
+// src/Modelo/Serie.php
+<?php
+
+require_once __DIR__ . '/Titulo.php';
+
+class Serie extends Titulo {
+    // Resto do código
+
+    public function duracaoEmMinutos(): int
+    {
+        return $this->numeroDeTemporadas * $this->episodiosPorTemporada * $this->minutosPorEpisodio;
+    }
+}
+```
