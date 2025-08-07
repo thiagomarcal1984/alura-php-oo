@@ -668,3 +668,17 @@ class Serie extends Titulo {
     }
 }
 ```
+## Polimorfismo
+O método `duracaoEmMinutos` na `Titulo` e suas subclasses  possui polimorfismo: há comportamentos diferentes para o mesmo nome de método.
+
+Uso da classe `CalculadoraDeMaratona` em `index.php`:
+```PHP
+<?php 
+require __DIR__ . '/src/Calculos/CalculadoraDeMaratona.php';
+
+// Resto do código 
+$calculadora = new CalculadoraDeMaratona();
+$calculadora->inclui($filme);
+$calculadora->inclui($serie);
+echo "Duração total da maratona: " . $calculadora->duracaoEmMinutos() . " minutos\n";
+```
